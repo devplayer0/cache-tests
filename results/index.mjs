@@ -1,6 +1,12 @@
 
 export default [
   {
+    "file": "poxy.json",
+    "name": "Poxy",
+    "type": "rev-proxy",
+    "version": "0.1"
+  },
+  {
     "file": "chrome.json",
     "name": "Chrome",
     "type": "browser",
