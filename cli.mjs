@@ -4,6 +4,7 @@ import { GREEN, NC } from './utils.mjs'
 import fetch from 'node-fetch'
 import tests from './tests/index.mjs'
 import surrogate from './tests/surrogate-control.mjs'
+import createHttpProxyAgent from 'http-proxy-agent'
 
 tests.push(surrogate)
 
@@ -30,7 +31,16 @@ if (testId !== '') {
   testsToRun = tests
 }
 
-client.runTests(testsToRun, fetch, false, baseUrl)
+const pFetch = (u, o) => {
+  if (!o) {
+    o = {}
+  }
+  if (process.env.http_proxy) {
+    o.agent = createHttpProxyAgent(process.env.http_proxy)
+  }
+  return fetch(u, o)
+}
+client.runTests(testsToRun, pFetch, false, baseUrl)
   .then(() => {
     if (testId !== '') {
       console.log(`${GREEN}==== Results${NC}`)
